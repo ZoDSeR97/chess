@@ -25,49 +25,66 @@ def square(x_coord, y_coord, width, height, color):
     pygame.draw.rect(screen, color, [x_coord, y_coord, width, height])
     allTiles.append([color, [x_coord, y_coord, width, height]])
 
-def drawPieces():
+def drawBoard():
     x_coord = 0
     y_coord = 0
     color = 0
     width = 75
     height = 75
-    number = 0
 
-    for rows in range(8):
-        for cols in range(8):
-            #print(rows, cols)
+    for _ in range(8):
+        for _ in range(8):
             if color % 2 == 0:
                 square(x_coord, y_coord, width, height, white)
-                if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
-                    img = pygame.image.load("./art/" 
-                        + chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper()
-                        + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
-                        + ".png")
-                    img = pygame.transform.scale(img,(75, 75))
-                    allPieces.append([img, [x_coord, y_coord]])
                 x_coord += 75
             else:
                 square(x_coord, y_coord, width, height, black)
-                if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
-                    img = pygame.image.load("./art/"
-                        + chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper()
-                        + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
-                        + ".png")
-                    img = pygame.transform.scale(img, (75, 75))
-                    allPieces.append([img, [x_coord, y_coord]])
                 x_coord += 75
             color += 1
-            number += 1
         color += 1
         x_coord = 0
         y_coord += 75
 
 gO = False
 
-drawPieces()
+drawBoard()
+
+#chessBoard.printBoard()
+
+def drawPieces(flip):
+    allPieces.clear()
+    if flip == 0:
+        order = range(8)
+    else:
+        order = reversed(range(8))
+    x_coord = 0
+    y_coord = 0
+    color = 0
+    width = 75
+    height = 75
+
+    for rows in order:
+        for cols in order:
+            if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
+                img = pygame.image.load("./art/" 
+                        + chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper()
+                        + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
+                        + ".png")
+                img = pygame.transform.scale(img,(width, height))
+                allPieces.append([img, [x_coord, y_coord]])
+            x_coord += 75
+        x_coord = 0
+        y_coord += 75
 
 print(allPieces)
-chessBoard.printBoard()
+
+drawPieces(0)
+
+for img in allPieces:
+    screen.blit(img[0], img[1])
+
+drawBoard()
+drawPieces(1)
 
 for img in allPieces:
     screen.blit(img[0], img[1])
@@ -90,10 +107,7 @@ while not gO:
         elif event.type == pygame.MOUSEBUTTONUP and not selectedPiece == None:
             #get UI coordinate
             x, y = pygame.mouse.get_pos()
-        #screen.transform.rotate(screen, 180)            
+        #screen.transform.rotate(screen, 180)       
 
     pygame.display.update()
     clock.tick(60)
-
-pygame.quit()
-quit()
