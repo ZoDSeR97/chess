@@ -49,7 +49,7 @@ def drawPieces():
             else:
                 square(x_coord, y_coord, width, height, black)
                 if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
-                    img = pygame.image.load("./art/" 
+                    img = pygame.image.load("./art/"
                         + chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper()
                         + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
                         + ".png")
@@ -74,7 +74,7 @@ for img in allPieces:
 
 while not gO:
     for event in pygame.event.get():
-        print(event)
+        #print(event)
         if event.type == pygame.QUIT:
             gO = True
             pygame.quit()
