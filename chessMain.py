@@ -74,7 +74,7 @@ for img in allPieces:
 
 while not gO:
     for event in pygame.event.get():
-        #print(event)
+        print(event)
         if event.type == pygame.QUIT:
             gO = True
             pygame.quit()
@@ -90,7 +90,7 @@ while not gO:
         elif event.type == pygame.MOUSEBUTTONUP and not selectedPiece == None:
             #get UI coordinate
             x, y = pygame.mouse.get_pos()
-            
+        #screen.transform.rotate(screen, 180)            
 
     pygame.display.update()
     clock.tick(60)
