@@ -54,30 +54,40 @@ def drawPieces(flip):
     height = 75
 
     if flip is False:
-        order = range(8)
+        for rows in range(8):
+            for cols in range(8):
+                #print(rows, cols)
+                if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
+                    img = pygame.image.load("./art/" 
+                            + chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper()
+                            + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
+                            + ".png")
+                    img = pygame.transform.scale(img,(width, height))
+                    allPieces.append([img, [x_coord, y_coord]])
+                    if flip is True:
+                        print(allPieces)  
+                x_coord += 75
+            x_coord = 0
+            y_coord += 75
     else:
-        print("Flip")
-        order = reversed(range(8))
-        print(order)
+        for rows in reversed(range(8)):
+            for cols in reversed(range(8)):
+                #print(rows, cols)
+                if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
+                    img = pygame.image.load("./art/" 
+                            + chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper()
+                            + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
+                            + ".png")
+                    img = pygame.transform.scale(img,(width, height))
+                    allPieces.append([img, [x_coord, y_coord]])
+                    if flip is True:
+                        print(allPieces)  
+                x_coord += 75
+            x_coord = 0
+            y_coord += 75
 
     if flip is True:
         print(allPieces)
-
-    for rows in order:
-        for cols in order:
-            #print(rows, cols)
-            if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
-                img = pygame.image.load("./art/" 
-                        + chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper()
-                        + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
-                        + ".png")
-                img = pygame.transform.scale(img,(width, height))
-                allPieces.append([img, [x_coord, y_coord]])
-                if flip is True:
-                    print(allPieces)  
-            x_coord += 75
-        x_coord = 0
-        y_coord += 75
 
 gO = False
 
