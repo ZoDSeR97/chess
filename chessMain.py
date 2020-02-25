@@ -56,14 +56,13 @@ def drawPieces(flip):
     if flip is False:
         for rows in range(8):
             for cols in range(8):
-                #print(rows, cols)
                 if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
                     img = pygame.image.load("./art/" 
                             + chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper()
                             + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
                             + ".png")
-                    img = pygame.transform.scale(img,(width, height))
-                    allPieces.append([img, [x_coord, y_coord]])
+                    img = pygame.transform.scale(img, (width, height))
+                    allPieces.append([[x_coord, y_coord], img])
                     if flip is True:
                         print(allPieces)  
                 x_coord += 75
@@ -72,36 +71,26 @@ def drawPieces(flip):
     else:
         for rows in reversed(range(8)):
             for cols in reversed(range(8)):
-                #print(rows, cols)
                 if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
                     img = pygame.image.load("./art/" 
                             + chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper()
                             + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
                             + ".png")
-                    img = pygame.transform.scale(img,(width, height))
-                    allPieces.append([img, [x_coord, y_coord]])
+                    img = pygame.transform.scale(img, (width, height))
+                    allPieces.append([[x_coord, y_coord], img])
                     if flip is True:
                         print(allPieces)  
                 x_coord += 75
             x_coord = 0
             y_coord += 75
 
-    if flip is True:
-        print(allPieces)
+    for img in allPieces:
+        screen.blit(img[1], img[0])
 
 gO = False
 
 drawBoard()
 drawPieces(False)
-
-for img in allPieces:
-    screen.blit(img[0], img[1])
-
-drawBoard()
-drawPieces(True)
-
-for img in allPieces:
-    screen.blit(img[0], img[1])
 
 while not gO:
     for event in pygame.event.get():
@@ -113,6 +102,11 @@ while not gO:
         if event.type == pygame.MOUSEBUTTONDOWN and selectedPiece == None:
             #get UI coordinate
             x, y = pygame.mouse.get_pos()
+
+            gX, gY = 0, 0
+
+            #if gX+15 < x < gX+60 and gY+15 < y < gY+75:
+                
                 
             if event.type == pygame.MOUSEMOTION and not selectedPiece == None:
                 #get UI coordinate
@@ -120,7 +114,11 @@ while not gO:
                     
         elif event.type == pygame.MOUSEBUTTONUP and not selectedPiece == None:
             #get UI coordinate
-            x, y = pygame.mouse.get_pos()    
+            x, y = pygame.mouse.get_pos()
+
+            drawBoard()
+            drawPieces(False)
+        else: pass
 
     pygame.display.update()
     clock.tick(60)
