@@ -94,7 +94,7 @@ drawPieces(False)
 
 while not gO:
     for event in pygame.event.get():
-        #print(event)
+        print(event)
         if event.type == pygame.QUIT:
             gO = True
             pygame.quit()
@@ -108,17 +108,16 @@ while not gO:
             #if gX+15 < x < gX+60 and gY+15 < y < gY+75:
                 
                 
-            if event.type == pygame.MOUSEMOTION and not selectedPiece == None:
-                #get UI coordinate
-                x, y = pygame.mouse.get_pos()
+        if event.type == pygame.MOUSEMOTION and not selectedPiece == None:
+            #get UI coordinate
+            x, y = pygame.mouse.get_pos()
                     
-        elif event.type == pygame.MOUSEBUTTONUP and not selectedPiece == None:
+        if event.type == pygame.MOUSEBUTTONUP and not selectedPiece == None:
             #get UI coordinate
             x, y = pygame.mouse.get_pos()
 
             drawBoard()
             drawPieces(False)
-        else: pass
 
     pygame.display.update()
     clock.tick(60)
