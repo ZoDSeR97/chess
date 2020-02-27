@@ -105,14 +105,21 @@ while not gO:
 
             gX, gY = 0, 0
 
-            #if gX+15 < x < gX+60 and gY+15 < y < gY+75:
-                
-                
+            if gX+15 < x < gX+60 and gY+15 < y < gY+75:
+                rows = gX%75
+                cols = gY%75
+                if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
+                    selectedPiece = chessBoard.board[rows][cols].pieceOccupy
+
+        if event.type == pygame.MOUSEBUTTONDOWN and not selectedPiece == None:
+            #get UI coordinate
+            x, y = pygame.mouse.get_pos()
+
         if event.type == pygame.MOUSEMOTION and not selectedPiece == None:
             #get UI coordinate
             x, y = pygame.mouse.get_pos()
-                    
-        if event.type == pygame.MOUSEBUTTONUP and not selectedPiece == None:
+            
+        elif event.type == pygame.MOUSEBUTTONUP and not selectedPiece == None:
             #get UI coordinate
             x, y = pygame.mouse.get_pos()
 
