@@ -17,10 +17,14 @@ clock = pygame.time.Clock()
 
 allTiles = []
 allPieces = []
-flip = False
+
+pieceMove = []
+currentAlliance = "W"
 
 chessBoard = Board()
 chessBoard.createBoard()
+
+flip = False
 
 def square(x_coord, y_coord, width, height, color):
     pygame.draw.rect(screen, color, [x_coord, y_coord, width, height])
@@ -62,9 +66,7 @@ def drawPieces(flip):
                             + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
                             + ".png")
                     img = pygame.transform.scale(img, (width, height))
-                    allPieces.append([[x_coord, y_coord], img])
-                    if flip is True:
-                        print(allPieces)  
+                    allPieces.append([[y_coord, x_coord], img]) 
                 x_coord += 75
             x_coord = 0
             y_coord += 75
@@ -77,54 +79,58 @@ def drawPieces(flip):
                             + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
                             + ".png")
                     img = pygame.transform.scale(img, (width, height))
-                    allPieces.append([[x_coord, y_coord], img])
-                    if flip is True:
-                        print(allPieces)  
+                    allPieces.append([[y_coord, x_coord], img])
                 x_coord += 75
             x_coord = 0
             y_coord += 75
 
     for img in allPieces:
-        screen.blit(img[1], img[0])
+        screen.blit(img[1], (img[0][1],img[0][0]))
 
 gO = False
 
 drawBoard()
-drawPieces(False)
+drawPieces(flip)
 
 while not gO:
     for event in pygame.event.get():
-        print(event)
+        #print(event)
         if event.type == pygame.QUIT:
             gO = True
             pygame.quit()
             quit()
         if event.type == pygame.MOUSEBUTTONDOWN and selectedPiece == None:
             #get UI coordinate
-            x, y = pygame.mouse.get_pos()
+            cols, rows = pygame.mouse.get_pos()
 
-            gX, gY = 0, 0
-
-            if gX+15 < x < gX+60 and gY+15 < y < gY+75:
-                rows = gX%75
-                cols = gY%75
-                if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
-                    selectedPiece = chessBoard.board[rows][cols].pieceOccupy
-
-        if event.type == pygame.MOUSEBUTTONDOWN and not selectedPiece == None:
+            for i in allPieces:
+                if i[0][0] < rows < i[0][0]+75 and i[0][1] < cols < i[0][1]+75:
+                    if chessBoard.board[(int)(i[0][0]/75)][(int)(i[0][1]/75)].pieceOccupy.alliance == currentAlliance:
+                        print("True")
+                        print((int)(i[0][0]/75), (int)(i[0][1]/75))
+                        selectedPiece = chessBoard.board[(int)(i[0][0]/75)][(int)(i[0][1]/75)].pieceOccupy
+                        print(selectedPiece)
+                        pieceMove = selectedPiece.validMove(chessBoard.board)
+                        print(pieceMove)
+                        for j in pieceMove:
+                            img = pygame.image.load("./art/green_circle_neg.png")
+                            img = pygame.transform.scale(img, (75, 75))
+                            screen.blit(img, (j[1]*75, j[0]*75))
+                
+        if event.type == pygame.MOUSEMOTION and not selectedPiece == None and pygame.mouse.get_pressed() == (1, 0, 0):
             #get UI coordinate
             x, y = pygame.mouse.get_pos()
-
-        if event.type == pygame.MOUSEMOTION and not selectedPiece == None:
+                    
+        if event.type == pygame.MOUSEBUTTONUP and not selectedPiece == None and pygame.mouse.get_pressed() == (1, 0, 0):
             #get UI coordinate
             x, y = pygame.mouse.get_pos()
             
-        elif event.type == pygame.MOUSEBUTTONUP and not selectedPiece == None:
+        if event.type == pygame.MOUSEBUTTONDOWN and not selectedPiece == None:
             #get UI coordinate
             x, y = pygame.mouse.get_pos()
-
-            drawBoard()
-            drawPieces(False)
-
+        '''
+        drawBoard()
+        drawPieces(flip)
+        '''
     pygame.display.update()
     clock.tick(60)
