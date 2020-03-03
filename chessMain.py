@@ -170,13 +170,11 @@ while not gO:
                         #print(currentPieces)
                         break
                     elif selectedPiece != None:
-                        if chessBoard.board[bRows][bCols].pieceOccupy.toString() == "0":
-                            selectedPiece.x_coord = bRows
-                            selectedPiece.y_coord = bCols
-                            chessBoard.updateBoard(bRows, bCols, selectedPiece)
-                            chessBoard.updateBoard(x_origin, y_origin, nullPiece())
-                            switchSide()
-                            
+                        selectedPiece.x_coord = bRows
+                        selectedPiece.y_coord = bCols
+                        chessBoard.updateBoard(bRows, bCols, selectedPiece)
+                        chessBoard.updateBoard(x_origin, y_origin, nullPiece())
+                        switchSide()
                 
         if event.type == pygame.MOUSEMOTION and not selectedPiece == None and pygame.mouse.get_pressed() == (1, 0, 0):
             #get UI coordinate
