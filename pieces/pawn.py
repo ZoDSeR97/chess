@@ -1,5 +1,5 @@
 from pieces.piece import Piece
-from rule.basicRule import checkPieces
+from rule.chessRule import checkPieces
 
 class Pawn(Piece):
     fMove = True
@@ -16,7 +16,6 @@ class Pawn(Piece):
             self.piecesMoves.append([self.x_coord-1, self.y_coord])
             if self.fMove is True:
                 self.piecesMoves.append([self.x_coord-2, self.y_coord])
-                self.fMove = False
             if self.y_coord+1 <= 7 and self.board[self.x_coord-1][self.y_coord+1].pieceOccupy.toString() != "0":
                 self.piecesMoves.append([self.x_coord-1, self.y_coord+1])
             if self.y_coord-1 >= 0 and self.board[self.x_coord-1][self.y_coord-1].pieceOccupy.toString() != "0":
@@ -25,10 +24,10 @@ class Pawn(Piece):
             self.piecesMoves.append([self.x_coord+1, self.y_coord])
             if self.fMove is True:
                 self.piecesMoves.append([self.x_coord+2, self.y_coord])
-                self.fMove = False
             if self.y_coord+1 <= 7 and self.board[self.x_coord+1][self.y_coord+1].pieceOccupy.toString() != "0":
                 self.piecesMoves.append([self.x_coord+1, self.y_coord+1])
             if self.y_coord-1 >= 0 and self.board[self.x_coord+1][self.y_coord-1].pieceOccupy.toString() != "0":
                 self.piecesMoves.append([self.x_coord+1, self.y_coord-1])
-        self.piecesMoves = checkPieces(board, self.piecesMoves, self).piecesMoves
-        return self.piecesMoves
+        check = checkPieces(board, self.piecesMoves, self)
+        check.Check()
+        return check.moveList

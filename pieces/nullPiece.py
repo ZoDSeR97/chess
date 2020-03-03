@@ -1,4 +1,6 @@
-class nullPiece:
+from pieces.piece import Piece
+
+class nullPiece(Piece):
     alliance = None
     x_coord = None
     y_coord = None

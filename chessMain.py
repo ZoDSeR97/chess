@@ -1,5 +1,5 @@
 from board.chessBoard import Board
-from pieces.piece import nullPiece
+from pieces.nullPiece import nullPiece
 import pygame, os, sys, time
 
 pygame.init()

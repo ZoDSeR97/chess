@@ -1,5 +1,5 @@
 from pieces.piece import Piece
-from rule.basicRule import checkPieces
+from rule.chessRule import checkPieces
 
 class King(Piece):
     def __init__(self, alliance, x, y):
