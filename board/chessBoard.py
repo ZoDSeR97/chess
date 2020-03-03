@@ -1,10 +1,10 @@
-from pieces.nullPiece import nullPiece
-from pieces.Pawn import Pawn
-from pieces.King import King
-from pieces.Knight import Knight
-from pieces.Queen import Queen
-from pieces.Bishop import Bishop
-from pieces.Rook import Rook
+from pieces.piece import nullPiece
+from pieces.piece import Pawn
+from pieces.piece import King
+from pieces.piece import Knight
+from pieces.piece import Queen
+from pieces.piece import Bishop
+from pieces.piece import Rook
 
 class Tile:
     pieceOccupy = None
@@ -63,3 +63,6 @@ class Board:
                 if count == 8:
                     print('|', end='\n')
                     count = 0
+    
+    def updateBoard(self, x, y, piece):
+        self.board[x][y] = Tile(piece)
