@@ -15,18 +15,21 @@ class checkPieces(Rule):
         for i in self.moveList:
             if self.board[i[0]][i[1]].pieceOccupy.toString() != "0":
                 if self.board[i[0]][i[1]].pieceOccupy.alliance == self.piece.alliance:
-                    self.moveList.remove([i[0], i[1]])
+                    self.moveList.remove(i)
+                    self.Check()
                 if self.piece.toString() != "N" and self.piece.toString() != "K":
                     for j in self.moveList:
                         if j[1] < i[1] < self.piece.y_coord or j[1] > i[1] > self.piece.y_coord:
                             self.moveList.remove(j)
                         elif (j[0] < i[0] < self.piece.x_coord or j[0] > i[0] > self.piece.x_coord) and j[1] == i[1] == self.piece.y_coord:
                             self.moveList.remove(j)
+                    self.Check()
                 if self.piece.toString() == "P":
                     if self.piece.alliance == "W" and i[0] < self.piece.x_coord and i[1] == self.piece.y_coord:
                         self.moveList.remove(i)
                     elif self.piece.alliance == "B" and i[0] > self.piece.x_coord and i[1] == self.piece.y_coord:
                         self.moveList.remove(i)
+                    self.Check()
         return self.moveList
 
 class enPassant(Rule):
