@@ -16,7 +16,7 @@ class checkPieces(Rule):
             if self.board[i[0]][i[1]].pieceOccupy.toString() != "0":
                 if self.board[i[0]][i[1]].pieceOccupy.alliance == self.piece.alliance:
                     self.moveList.remove([i[0], i[1]])
-                if self.piece.toString() != "N" or self.piece.toString() != "K":
+                if self.piece.toString() != "N" and self.piece.toString() != "K":
                     for j in self.moveList:
                         if j[1] < i[1] < self.piece.y_coord or j[1] > i[1] > self.piece.y_coord:
                             self.moveList.remove(j)
