@@ -30,18 +30,56 @@ currentAlliance = "W"
 chessBoard = Board()
 chessBoard.createBoard()
 
-flip = [False]
+flip = False
 
 x_origin = None
 y_origin = None
 
 def switchSide():
     global flip
-    flip[0] = not flip[0]
+    global wPieces
+    global bPieces
+    flip = not flip
     drawBoard()
-    drawPieces(flip[0])
+    drawPieces(flip)
+    if flip is False:
+        for i in wPieces:
+            if chessBoard.board[(int)(i[0]/75)][(int)(i[1]/75)].pieceOccupy.toString() == "P":
+                chessBoard.board[(int)(i[0]/75)][(int)(i[1]/75)].pieceOccupy.passP = False
+    else:
+        for i in bPieces:
+            if chessBoard.board[(int)((525-i[0])/75)][(int)((525-i[1])/75)].pieceOccupy.toString() == "P":
+                chessBoard.board[(int)((525-i[0])/75)][(int)((525-i[1])/75)].pieceOccupy.passP = False
+
+def Move(x, y):
+    global x_origin
+    global y_origin
+    print("Move from [", x_origin, ",", y_origin, "] to [", x, ",", y, "]")
+    if selectedPiece.toString() == "P":
+
+        if selectedPiece.x_coord +2 == x or selectedPiece.x_coord -2 == x:
+            selectedPiece.passP = True
+
+        if selectedPiece.alliance == "B" and y != y_origin:
+            if chessBoard.board[x-1][y].pieceOccupy.toString() == "P":
+                if chessBoard.board[x-1][y].pieceOccupy.passP == True:
+                    chessBoard.updateBoard(x-1, y, nullPiece())
+
+        if selectedPiece.alliance == "W" and y != y_origin:
+            if chessBoard.board[x+1][y].pieceOccupy.toString() == "P":
+                print(chessBoard.board[x+1][y].pieceOccupy.passP)
+                if chessBoard.board[x+1][y].pieceOccupy.passP == True:
+                    chessBoard.updateBoard(x+1, y, nullPiece())
+
+    selectedPiece.x_coord = x
+    selectedPiece.y_coord = y
+    selectedPiece.fMove = False
+    chessBoard.updateBoard(x, y, selectedPiece)
+    chessBoard.updateBoard(x_origin, y_origin, nullPiece())
+
 
 def square(x_coord, y_coord, width, height, color):
+    global allTiles
     pygame.draw.rect(screen, color, [x_coord, y_coord, width, height])
     allTiles.append([color, [x_coord, y_coord, width, height]])
 
@@ -66,6 +104,10 @@ def drawBoard():
         y_coord += 75
 
 def drawPieces(flip):
+    global currentAlliance
+    global allPieces
+    global wPieces
+    global bPieces
     allPieces.clear()
     wPieces.clear()
     bPieces.clear()
@@ -73,7 +115,6 @@ def drawPieces(flip):
     y_coord = 0
     width = 75
     height = 75
-    global currentAlliance
 
     if flip is False:
         currentAlliance = "W"
@@ -118,7 +159,7 @@ def drawPieces(flip):
 gO = False
 
 drawBoard()
-drawPieces(flip[0])
+drawPieces(flip)
 currentPieces = wPieces
 
 while not gO:
@@ -156,7 +197,7 @@ while not gO:
                         pieceMove = selectedPiece.validMove(chessBoard.board)
                         print("validMoves:", pieceMove)
                         drawBoard()
-                        drawPieces(flip[0])
+                        drawPieces(flip)
                         for j in pieceMove:
                             j[0] = j[0]*75
                             j[1] = j[1]*75
@@ -170,10 +211,7 @@ while not gO:
                         #print(currentPieces)
                         break
                     elif selectedPiece != None:
-                        selectedPiece.x_coord = bRows
-                        selectedPiece.y_coord = bCols
-                        chessBoard.updateBoard(bRows, bCols, selectedPiece)
-                        chessBoard.updateBoard(x_origin, y_origin, nullPiece())
+                        Move(bRows, bCols)
                         switchSide()
                 
         if event.type == pygame.MOUSEMOTION and not selectedPiece == None and pygame.mouse.get_pressed() == (1, 0, 0):

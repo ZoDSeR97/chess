@@ -1,5 +1,6 @@
 from pieces.piece import Piece
 from rule.chessRule import checkPieces
+from rule.chessRule import enPassant
 
 class Pawn(Piece):
     fMove = True
@@ -30,4 +31,6 @@ class Pawn(Piece):
                 self.piecesMoves.append([self.x_coord+1, self.y_coord-1])
         check = checkPieces(board, self.piecesMoves, self)
         check.Check()
+        enP = enPassant(board, check.moveList, self)
+        enP.Check()
         return check.moveList
