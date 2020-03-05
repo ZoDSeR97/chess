@@ -2,6 +2,7 @@ class Rule:
     board = None
     moveList = []
     piece = None
+    removeList = []
     def __init__(self, board, piecesMoves, piece):
         self.board = board
         self.moveList = piecesMoves
@@ -15,22 +16,25 @@ class checkPieces(Rule):
         for i in self.moveList:
             if self.board[i[0]][i[1]].pieceOccupy.toString() != "0":
                 if self.board[i[0]][i[1]].pieceOccupy.alliance == self.piece.alliance:
-                    self.moveList.remove(i)
-                    self.Check()
+                    self.removeList.append(i)
                 if self.piece.toString() != "N" and self.piece.toString() != "K":
                     for j in self.moveList:
-                        if j[1] < i[1] < self.piece.y_coord or j[1] > i[1] > self.piece.y_coord:
-                            self.moveList.remove(j)
-                        elif (j[0] < i[0] < self.piece.x_coord or j[0] > i[0] > self.piece.x_coord) and j[1] == i[1] == self.piece.y_coord:
-                            self.moveList.remove(j)
-                    self.Check()
+                        if j[0] > i[0] > self.piece.x_coord:
+                            self.removeList.append(j)
+                        elif j[0] < i[0] < self.piece.x_coord:
+                            self.removeList.append(j)
+                        elif j[0] == i[0] == self.piece.x_coord:
+                            if i[1] < self.piece.y_coord and j[1] > i[1]:
+                                self.removeList.append(j)
+                            if i[1] > self.piece.y_coord and j[1] < i[1]:
+                                self.removeList.append(j)
                 if self.piece.toString() == "P":
                     if self.piece.alliance == "W" and i[0] < self.piece.x_coord and i[1] == self.piece.y_coord:
-                        self.moveList.remove(i)
+                        self.removeList.append(i)
                     elif self.piece.alliance == "B" and i[0] > self.piece.x_coord and i[1] == self.piece.y_coord:
-                        self.moveList.remove(i)
-                    self.Check()
-        return self.moveList
+                        self.removeList.append(i)
+        self.moveList = [i for i in self.moveList if i not in self.removeList]
+        self.removeList.clear()
 
 class enPassant(Rule):
 

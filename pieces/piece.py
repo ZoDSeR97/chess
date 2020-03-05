@@ -16,3 +16,4 @@ class Piece:
 
     def validMove(self, board):
         self.board = board
+        self.piecesMoves.clear()
