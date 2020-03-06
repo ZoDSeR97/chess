@@ -14,7 +14,7 @@ screen = pygame.display.set_mode((ui_width, ui_height))
 screen = pygame.display.get_surface()
 #screen.blit(pygame.transform.flip(screen, False, True), dest=(0, 0))
 
-pygame.display.set_caption("ChessA")
+pygame.display.set_caption("Pygame Chess")
 
 clock = pygame.time.Clock()
 
