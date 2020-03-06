@@ -110,8 +110,6 @@ def drawPieces(flip):
     traverse = [i for i in range(8)]
     x_coord = 0
     y_coord = 0
-    width = 75
-    height = 75
 
     if flip is False:
         currentAlliance = "W"
@@ -128,7 +126,7 @@ def drawPieces(flip):
                         + chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper()
                         + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
                         + ".png")
-                img = pygame.transform.scale(img, (width, height))
+                img = pygame.transform.scale(img, (75, 75))
                 if flip is False and chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper() == "W":
                     wPieces.append([(int)(y_coord/75), (int)(x_coord/75)])
                 elif flip is True and chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper() == "B":
