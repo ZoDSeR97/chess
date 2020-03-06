@@ -103,7 +103,7 @@ def drawPieces(flip):
     global wPieces
     global bPieces
     allPieces.clear()
-    
+    traverse = [i for i in range(8)]
     x_coord = 0
     y_coord = 0
     width = 75
@@ -112,37 +112,27 @@ def drawPieces(flip):
     if flip is False:
         currentAlliance = "W"
         wPieces.clear()
-        for rows in range(8):
-            for cols in range(8):
-                if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
-                    img = pygame.image.load("./art/" 
-                            + chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper()
-                            + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
-                            + ".png")
-                    img = pygame.transform.scale(img, (width, height))
-                    if(chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper() == "W"):
-                        wPieces.append([(int)(y_coord/75), (int)(x_coord/75)])
-                    allPieces.append([[y_coord, x_coord], img]) 
-                x_coord += 75
-            x_coord = 0
-            y_coord += 75
     else:
         currentAlliance = "B"
         bPieces.clear()
-        for rows in reversed(range(8)):
-            for cols in reversed(range(8)):
-                if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
-                    img = pygame.image.load("./art/" 
-                            + chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper()
-                            + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
-                            + ".png")
-                    img = pygame.transform.scale(img, (width, height))
-                    if(chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper() == "B"):
-                        bPieces.append([(int)((525-y_coord)/75), (int)((525-x_coord)/75)])
-                    allPieces.append([[y_coord, x_coord], img])
-                x_coord += 75
-            x_coord = 0
-            y_coord += 75
+        traverse.reverse()
+        
+    for rows in traverse:
+        for cols in traverse:
+            if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
+                img = pygame.image.load("./art/" 
+                        + chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper()
+                        + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
+                        + ".png")
+                img = pygame.transform.scale(img, (width, height))
+                if flip is False and chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper() == "W":
+                    wPieces.append([(int)(y_coord/75), (int)(x_coord/75)])
+                elif flip is True and chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper() == "B":
+                    bPieces.append([(int)((525-y_coord)/75), (int)((525-x_coord)/75)])
+                allPieces.append([[y_coord, x_coord], img]) 
+            x_coord += 75
+        x_coord = 0
+        y_coord += 75     
 
     for img in allPieces:
         screen.blit(img[1], (img[0][1],img[0][0]))
