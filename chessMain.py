@@ -164,11 +164,6 @@ currentPieces = wPieces
 
 while not gO:
 
-    if currentAlliance == "W":
-        currentPieces = wPieces
-    else:
-        currentPieces = bPieces
-
     for event in pygame.event.get():
         #print(event)
         if event.type == pygame.QUIT:
@@ -179,40 +174,35 @@ while not gO:
         if event.type == pygame.MOUSEBUTTONDOWN:
             #get UI coordinate
             cols, rows = pygame.mouse.get_pos()
-
-            for i in currentPieces:
-                if i[0] < rows < i[0]+75 and i[1] < cols < i[1]+75:
-                    bRows = (int)(i[0]/75)
-                    bCols = (int)(i[1]/75)
-                    if currentAlliance == "B":
-                        bRows = (int)((525-i[0])/75)
-                        bCols = (int)((525-i[1])/75)
-                    if chessBoard.board[bRows][bCols].pieceOccupy.alliance == currentAlliance:
-                        #print(bRows, bCols)
-                        pieceMove.clear()
-                        selectedPiece = chessBoard.board[bRows][bCols].pieceOccupy
-                        x_origin = bRows
-                        y_origin = bCols
-                        print(selectedPiece, "at coordination: [", bRows, ", ", bCols, "]")
-                        pieceMove = selectedPiece.validMove(chessBoard.board)
-                        print("validMoves:", pieceMove)
-                        drawBoard()
-                        drawPieces(flip)
-                        for j in pieceMove:
-                            j[0] = j[0]*75
-                            j[1] = j[1]*75
-                            if(currentAlliance == "B"):
-                                j[0] = 525 - j[0]
-                                j[1] = 525 - j[1]
-                            img = pygame.image.load("./art/green_circle_neg.png")
-                            img = pygame.transform.scale(img, (75, 75))
-                            screen.blit(img, (j[1], j[0]))
-                            currentPieces.extend([[j[0], j[1]]])
-                        #print(currentPieces)
-                        break
-                    elif selectedPiece != None:
-                        Move(bRows, bCols)
-                        switchSide()
+            bRows = (int)(rows/75)
+            bCols = (int)(cols/75)
+            if currentAlliance == "B":
+                bRows = (int)((600-rows)/75)
+                bCols = (int)((600-cols)/75)
+            print(pieceMove)
+            if chessBoard.board[bRows][bCols].pieceOccupy.alliance == currentAlliance:
+                pieceMove.clear()
+                selectedPiece = chessBoard.board[bRows][bCols].pieceOccupy
+                x_origin = bRows
+                y_origin = bCols
+                print(selectedPiece, "at coordination: [", bRows, ", ", bCols, "]")
+                pieceMove = selectedPiece.validMove(chessBoard.board)
+                print("validMoves:", pieceMove)
+                moveList = list(pieceMove)
+                drawBoard()
+                drawPieces(flip)
+                for j in moveList:
+                    j[0] = j[0]*75
+                    j[1] = j[1]*75
+                    if(currentAlliance == "B"):
+                        j[0] = 525 - j[0]
+                        j[1] = 525 - j[1]
+                    img = pygame.image.load("./art/green_circle_neg.png")
+                    img = pygame.transform.scale(img, (75, 75))
+                    screen.blit(img, (j[1], j[0]))
+            elif selectedPiece != None and [bRows, bCols] in pieceMove:
+                Move(bRows, bCols)
+                switchSide()
                 
         if event.type == pygame.MOUSEMOTION and not selectedPiece == None and pygame.mouse.get_pressed() == (1, 0, 0):
             #get UI coordinate

@@ -5,6 +5,7 @@ class Piece:
     board = None
     piecesMoves = []
     fMove = True
+    protected = False
 
     def __init__(self, alliance, x, y):
         self.alliance = alliance
