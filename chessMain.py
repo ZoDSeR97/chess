@@ -30,6 +30,8 @@ currentAlliance = "W"
 chessBoard = Board()
 chessBoard.createBoard()
 
+passPawn = None
+
 flip = False
 
 x_origin = None
@@ -38,13 +40,14 @@ y_origin = None
 def switchSide():
     global flip
     global selectedPiece
+    global passPawn
     flip = not flip
+    if passPawn is not None:
+        passPawn.passP = False
     drawBoard()
     drawPieces(flip)
-    if selectedPiece.toString() == "P":
-        selectedPiece.passP = False
-    selectedPiece = None
-
+    if selectedPiece.toString() == "P" and selectedPiece.passP is True:
+        passPawn = selectedPiece
 
 def Move(x, y):
     global x_origin
@@ -116,7 +119,7 @@ def drawPieces(flip):
         currentAlliance = "B"
         bPieces.clear()
         traverse.reverse()
-        
+
     for rows in traverse:
         for cols in traverse:
             if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
