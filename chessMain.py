@@ -44,6 +44,8 @@ def switchSide():
     flip = not flip
     if passPawn is not None:
         passPawn.passP = False
+        passPawn = None
+
     drawBoard()
     drawPieces(flip)
     if selectedPiece.toString() == "P" and selectedPiece.passP is True:
@@ -64,7 +66,6 @@ def Move(x, y):
 
         if selectedPiece.alliance == "W" and y != y_origin:
             if chessBoard.board[x+1][y].pieceOccupy.toString() == "P":
-                print(chessBoard.board[x+1][y].pieceOccupy.passP)
                 if chessBoard.board[x+1][y].pieceOccupy.passP == True:
                     chessBoard.updateBoard(x+1, y, nullPiece())
 
