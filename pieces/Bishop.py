@@ -10,5 +10,17 @@ class Bishop(Piece):
 
     def validMove(self, board):
         super().validMove(board)
+        for i in range(1,8):
+            if(-1 <self.x_coord - i <8 and -1 <self.y_coord + i < 8 ):
+                self.piecesMoves.append([self.x_coord - i, self.y_coord + i])
+            if (-1 < self.x_coord - i < 8 and -1 < self.y_coord - i < 8):
+                self.piecesMoves.append([self.x_coord - i, self.y_coord - i])
+            if (-1 < self.x_coord + i < 8 and -1 < self.y_coord + i < 8):
+                self.piecesMoves.append([self.x_coord + i, self.y_coord + i])
+            if (-1 < self.x_coord + i < 8 and -1 < self.y_coord - i < 8):
+                self.piecesMoves.append([self.x_coord + i, self.y_coord - i])
 
-        return self.piecesMoves
+        print(self.piecesMoves)
+        check = checkPieces(board, self.piecesMoves, self)
+        check.Check()
+        return check.moveList
