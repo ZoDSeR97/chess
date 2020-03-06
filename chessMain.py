@@ -184,20 +184,18 @@ while not gO:
                 selectedPiece = chessBoard.board[bRows][bCols].pieceOccupy
                 x_origin = bRows
                 y_origin = bCols
-                print(selectedPiece, "at coordination: [", bRows, ", ", bCols, "]")
                 pieceMove = selectedPiece.validMove(chessBoard.board)
-                print("validMoves:", pieceMove)
                 drawBoard()
                 drawPieces(flip)
                 for j in pieceMove:
-                    x = j[0]*75
-                    y = j[1]*75
+                    y = j[0]*75
+                    x = j[1]*75
                     if(currentAlliance == "B"):
-                        x = 525 - x
                         y = 525 - y
+                        x = 525 - x
                     img = pygame.image.load("./art/green_circle_neg.png")
                     img = pygame.transform.scale(img, (75, 75))
-                    screen.blit(img, (y, x))
+                    screen.blit(img, (x, y))
             elif selectedPiece != None and [bRows, bCols] in pieceMove:
                 Move(bRows, bCols)
                 switchSide()

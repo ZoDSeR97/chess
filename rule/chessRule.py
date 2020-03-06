@@ -22,23 +22,29 @@ class checkPieces(Rule):
                         self.removeList.append(i)
                     elif self.piece.alliance == "B" and i[0] > self.piece.x_coord and i[1] == self.piece.y_coord:
                         self.removeList.append(i)
-                if self.piece.toString() != "N" and self.piece.toString() != "K" or len(self.removeList) == len(self.moveList):
+                if len(self.moveList) == 0 or self.piece.toString() != "N" and self.piece.toString() != "K":
                     for j in self.moveList:
-                        if j in self.removeList:
+                        if len(self.moveList) == len(self.removeList):
+                            break
+                        elif j in self.removeList:
                             continue
                         if j[0] == i[0] == self.piece.x_coord:
-                            if i[1] < self.piece.y_coord and j[1] > i[1]:
+                            if j[1] < i[1] < self.piece.y_coord:
                                 self.removeList.append(j)
-                            if i[1] > self.piece.y_coord and j[1] < i[1]:
+                            elif j[1] > i[1] > self.piece.y_coord:
                                 self.removeList.append(j)
                         elif j[1] == i[1] == self.piece.y_coord:
-                            if i[0] < self.piece.y_coord and j[0] > i[0]:
+                            if j[0] < i[0] < self.piece.x_coord:
                                 self.removeList.append(j)
-                            if i[0] > self.piece.y_coord and j[0] < i[0]:
+                            elif j[0] > i[0] > self.piece.x_coord:
                                 self.removeList.append(j)
-                        elif j[0] > i[0] and j[1] != self.piece.y_coord:
+                        elif j[1] > i[1] > self.piece.y_coord and j[0] < i[0] < self.piece.x_coord:
                             self.removeList.append(j)
-                        elif j[0] < i[0] and j[1] != self.piece.y_coord:
+                        elif j[1] < i[1] < self.piece.y_coord and j[0] < i[0] < self.piece.x_coord:
+                            self.removeList.append(j)
+                        elif j[1] > i[1] > self.piece.y_coord and j[0] > i[0] > self.piece.x_coord:
+                            self.removeList.append(j)
+                        elif j[1] < i[1] < self.piece.y_coord and j[0] > i[0] > self.piece.x_coord:
                             self.removeList.append(j)
         self.moveList = [i for i in self.moveList if i not in self.removeList]
         self.removeList.clear()
