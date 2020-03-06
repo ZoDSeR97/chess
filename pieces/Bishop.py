@@ -19,8 +19,6 @@ class Bishop(Piece):
                 self.piecesMoves.append([self.x_coord + i, self.y_coord + i])
             if (-1 < self.x_coord + i < 8 and -1 < self.y_coord - i < 8):
                 self.piecesMoves.append([self.x_coord + i, self.y_coord - i])
-
-        print(self.piecesMoves)
         check = checkPieces(board, self.piecesMoves, self)
         check.Check()
         return check.moveList
