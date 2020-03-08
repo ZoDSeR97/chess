@@ -18,9 +18,7 @@ pygame.display.set_caption("Pygame Chess")
 
 clock = pygame.time.Clock()
 
-allTiles = []
 allPieces = []
-currentPieces = []
 wPieces= []
 bPieces= []
 
@@ -37,50 +35,6 @@ flip = False
 x_origin = None
 y_origin = None
 
-def switchSide():
-    global flip
-    global selectedPiece
-    global passPawn
-    flip = not flip
-    if passPawn is not None:
-        passPawn.passP = False
-        passPawn = None
-
-    drawBoard()
-    drawPieces(flip)
-    if selectedPiece.toString() == "P" and selectedPiece.passP is True:
-        passPawn = selectedPiece
-
-def Move(x, y):
-    global x_origin
-    global y_origin
-    if selectedPiece.toString() == "P":
-
-        if selectedPiece.x_coord +2 == x or selectedPiece.x_coord -2 == x:
-            selectedPiece.passP = True
-
-        if selectedPiece.alliance == "B" and y != y_origin:
-            if chessBoard.board[x-1][y].pieceOccupy.toString() == "P":
-                if chessBoard.board[x-1][y].pieceOccupy.passP == True:
-                    chessBoard.updateBoard(x-1, y, nullPiece())
-
-        if selectedPiece.alliance == "W" and y != y_origin:
-            if chessBoard.board[x+1][y].pieceOccupy.toString() == "P":
-                if chessBoard.board[x+1][y].pieceOccupy.passP == True:
-                    chessBoard.updateBoard(x+1, y, nullPiece())
-
-    selectedPiece.x_coord = x
-    selectedPiece.y_coord = y
-    selectedPiece.fMove = False
-    chessBoard.updateBoard(x, y, selectedPiece)
-    chessBoard.updateBoard(x_origin, y_origin, nullPiece())
-
-
-def square(x_coord, y_coord, width, height, color):
-    global allTiles
-    pygame.draw.rect(screen, color, [x_coord, y_coord, width, height])
-    allTiles.append([color, [x_coord, y_coord, width, height]])
-
 def drawBoard():
     x_coord = 0
     y_coord = 0
@@ -91,10 +45,10 @@ def drawBoard():
     for _ in range(8):
         for _ in range(8):
             if color % 2 == 0:
-                square(x_coord, y_coord, width, height, white)
+                pygame.draw.rect(screen, white, [x_coord, y_coord, width, height])
                 x_coord += 75
             else:
-                square(x_coord, y_coord, width, height, black)
+                pygame.draw.rect(screen, black, [x_coord, y_coord, width, height])
                 x_coord += 75
             color += 1
         color += 1
@@ -121,10 +75,10 @@ def drawPieces(flip):
 
     for rows in traverse:
         for cols in traverse:
-            if not chessBoard.board[rows][cols].pieceOccupy.toString() == "0":
+            if not chessBoard.board[rows][cols].pieceOccupy.symbol == "0":
                 img = pygame.image.load("./art/" 
                         + chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper()
-                        + chessBoard.board[rows][cols].pieceOccupy.toString().upper()
+                        + chessBoard.board[rows][cols].pieceOccupy.symbol.upper()
                         + ".png")
                 img = pygame.transform.scale(img, (75, 75))
                 if flip is False and chessBoard.board[rows][cols].pieceOccupy.alliance[0].upper() == "W":
@@ -138,6 +92,45 @@ def drawPieces(flip):
 
     for img in allPieces:
         screen.blit(img[1], (img[0][1],img[0][0]))
+
+def switchSide():
+    global flip
+    global selectedPiece
+    global passPawn
+    flip = not flip
+    if passPawn is not None:
+        passPawn.passP = False
+        passPawn = None
+
+    drawBoard()
+    drawPieces(flip)
+    if selectedPiece.symbol == "P" and selectedPiece.passP is True:
+        passPawn = selectedPiece
+
+def Move(x, y):
+    global x_origin
+    global y_origin
+    if selectedPiece.symbol == "P":
+
+        if selectedPiece.x_coord +2 == x or selectedPiece.x_coord -2 == x:
+            selectedPiece.passP = True
+
+        if selectedPiece.alliance == "B" and y != y_origin:
+            if chessBoard.board[x-1][y].pieceOccupy.symbol == "P":
+                if chessBoard.board[x-1][y].pieceOccupy.passP == True:
+                    chessBoard.updateBoard(x-1, y, nullPiece())
+
+        if selectedPiece.alliance == "W" and y != y_origin:
+            if chessBoard.board[x+1][y].pieceOccupy.symbol == "P":
+                if chessBoard.board[x+1][y].pieceOccupy.passP == True:
+                    chessBoard.updateBoard(x+1, y, nullPiece())
+
+    selectedPiece.x_coord = x
+    selectedPiece.y_coord = y
+    selectedPiece.fMove = False
+    chessBoard.updateBoard(x, y, selectedPiece)
+    chessBoard.updateBoard(x_origin, y_origin, nullPiece())
+    switchSide()
 
 gO = False
 
@@ -173,7 +166,7 @@ while not gO:
                 for j in pieceMove:
                     y = j[0]*75
                     x = j[1]*75
-                    if(currentAlliance == "B"):
+                    if currentAlliance == "B":
                         y = 525 - y
                         x = 525 - x
                     img = pygame.image.load("./art/green_circle_neg.png")
@@ -181,7 +174,6 @@ while not gO:
                     screen.blit(img, (x, y))
             elif selectedPiece != None and [bRows, bCols] in pieceMove:
                 Move(bRows, bCols)
-                switchSide()
                 
         if event.type == pygame.MOUSEMOTION and not selectedPiece == None and pygame.mouse.get_pressed() == (1, 0, 0):
             #get UI coordinate

@@ -1,38 +1,13 @@
 from pieces.piece import Piece
-from rule.chessRule import checkPieces
 
 class Knight(Piece):
     def __init__(self, alliance, x, y):
         super().__init__(alliance, x, y)
-
-    def toString(self):
-        return "N"
+        self.symbol = "N"
 
     def validMove(self, board):
+        self.traverse = [[2, 1], [2, -1], [1, 2], [-1, 2], [-2, 1], [-2, -1], [1, -2], [-1, -2]]
+        
         super().validMove(board)
-        super().validMove(board)
-        # self.piecesMoves.append([self.x_coord-1, self.y_coord])
-        # down right move
-        if self.x_coord < 6 and self.y_coord < 7:
-            self.piecesMoves.append([self.x_coord + 2, self.y_coord + 1])
-        if self.x_coord < 7 and self.y_coord < 6:
-            self.piecesMoves.append([self.x_coord + 1, self.y_coord + 2])
-        # down left move
-        if self.x_coord > 1 and self.y_coord < 7:
-            self.piecesMoves.append([self.x_coord - 2, self.y_coord + 1])
-        if self.x_coord > 0 and self.y_coord < 6:
-            self.piecesMoves.append([self.x_coord - 1, self.y_coord + 2])
-        # up right move
-        if self.x_coord < 7 and self.y_coord > 1:
-            self.piecesMoves.append([self.x_coord + 1, self.y_coord - 2])
-        if self.x_coord < 6 and self.y_coord > 0:
-            self.piecesMoves.append([self.x_coord + 2, self.y_coord - 1])
-        # up left move
-        if self.x_coord > 0 and self.y_coord > 1:
-            self.piecesMoves.append([self.x_coord - 1, self.y_coord - 2])
-        if self.x_coord > 1 and self.y_coord > 0:
-            self.piecesMoves.append([self.x_coord - 2, self.y_coord - 1])
 
-        check = checkPieces(board, self.piecesMoves, self)
-        check.Check()
-        return check.moveList
+        return self.piecesMoves

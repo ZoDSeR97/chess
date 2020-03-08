@@ -1,24 +1,13 @@
 from pieces.piece import Piece
-from rule.chessRule import checkPieces
 
 class Bishop(Piece):
     def __init__(self, alliance, x, y):
         super().__init__(alliance, x, y)
-
-    def toString(self):
-        return "B"
+        self.symbol = "B"
 
     def validMove(self, board):
+        self.traverse = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
+        
         super().validMove(board)
-        for i in range(1,8):
-            if(-1 <self.x_coord - i <8 and -1 <self.y_coord + i < 8 ):
-                self.piecesMoves.append([self.x_coord - i, self.y_coord + i])
-            if (-1 < self.x_coord - i < 8 and -1 < self.y_coord - i < 8):
-                self.piecesMoves.append([self.x_coord - i, self.y_coord - i])
-            if (-1 < self.x_coord + i < 8 and -1 < self.y_coord + i < 8):
-                self.piecesMoves.append([self.x_coord + i, self.y_coord + i])
-            if (-1 < self.x_coord + i < 8 and -1 < self.y_coord - i < 8):
-                self.piecesMoves.append([self.x_coord + i, self.y_coord - i])
-        check = checkPieces(board, self.piecesMoves, self)
-        check.Check()
-        return check.moveList
+        
+        return self.piecesMoves

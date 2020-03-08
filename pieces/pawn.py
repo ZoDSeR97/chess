@@ -1,5 +1,4 @@
 from pieces.piece import Piece
-from rule.chessRule import checkPieces
 from rule.chessRule import enPassant
 
 class Pawn(Piece):
@@ -7,30 +6,30 @@ class Pawn(Piece):
 
     def __init__(self, alliance, x, y):
         super().__init__(alliance, x, y)
-    
-    def toString(self):
-        return "P"
+        self.symbol = "P"
 
     def validMove(self, board):
         super().validMove(board)
-        if self.alliance == "W":
-            self.piecesMoves.append([self.x_coord-1, self.y_coord])
-            if self.fMove is True:
-                self.piecesMoves.append([self.x_coord-2, self.y_coord])
-            if self.y_coord+1 <= 7 and self.board[self.x_coord-1][self.y_coord+1].pieceOccupy.toString() != "0":
-                self.piecesMoves.append([self.x_coord-1, self.y_coord+1])
-            if self.y_coord-1 >= 0 and self.board[self.x_coord-1][self.y_coord-1].pieceOccupy.toString() != "0":
-                self.piecesMoves.append([self.x_coord-1, self.y_coord-1])
-        else:
-            self.piecesMoves.append([self.x_coord+1, self.y_coord])
-            if self.fMove is True:
-                self.piecesMoves.append([self.x_coord+2, self.y_coord])
-            if self.y_coord+1 <= 7 and self.board[self.x_coord+1][self.y_coord+1].pieceOccupy.toString() != "0":
-                self.piecesMoves.append([self.x_coord+1, self.y_coord+1])
-            if self.y_coord-1 >= 0 and self.board[self.x_coord+1][self.y_coord-1].pieceOccupy.toString() != "0":
-                self.piecesMoves.append([self.x_coord+1, self.y_coord-1])
-        check = checkPieces(board, self.piecesMoves, self)
-        check.Check()
-        enP = enPassant(board, check.moveList, self)
+
+        traverse = {"W": -1, "B": 1}
+
+        x = self.x_coord + traverse[self.alliance]
+
+        if x in range(8) and self.board[x][self.y_coord].pieceOccupy.symbol == "0":
+            self.piecesMoves.append([x, self.y_coord])
+
+        if self.y_coord+1 < 8 and self.board[x][self.y_coord+1].pieceOccupy.symbol != "0":
+            if self.board[x][self.y_coord+1].pieceOccupy.alliance != self.alliance:
+                self.piecesMoves.append([x, self.y_coord+1])
+
+        if self.y_coord-1 >= 0 and self.board[x][self.y_coord-1].pieceOccupy.symbol != "0":
+            if self.board[x][self.y_coord+1].pieceOccupy.alliance != self.alliance:
+                self.piecesMoves.append([x, self.y_coord-1])
+
+        if self.fMove is True and self.board[x+traverse[self.alliance]][self.y_coord].pieceOccupy.symbol == "0":
+            self.piecesMoves.append([x+traverse[self.alliance], self.y_coord])
+
+        enP = enPassant(self.board, self.piecesMoves, self)
         enP.Check()
-        return check.moveList
+        
+        return self.piecesMoves
