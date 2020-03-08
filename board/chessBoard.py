@@ -58,7 +58,7 @@ class Board:
         count = 0
         for rows in range(8):
             for cols in range(8):
-                print('|', end=self.board[rows][cols].pieceOccupy.toString())
+                print('|', end=self.board[rows][cols].pieceOccupy.symbol)
                 count += 1
                 if count == 8:
                     print('|', end='\n')

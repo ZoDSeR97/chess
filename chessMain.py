@@ -150,6 +150,7 @@ while not gO:
         if event.type == pygame.MOUSEBUTTONDOWN:
             #get UI coordinate
             cols, rows = pygame.mouse.get_pos()
+            #convert into board coordinate
             bRows = (int)(rows/75)
             bCols = (int)(cols/75)
             if currentAlliance == "B":
