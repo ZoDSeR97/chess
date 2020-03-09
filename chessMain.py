@@ -161,7 +161,7 @@ while not gO:
                 selectedPiece = chessBoard.board[bRows][bCols].pieceOccupy
                 x_origin = bRows
                 y_origin = bCols
-                pieceMove = selectedPiece.validMove(chessBoard.board)
+                pieceMove = set(selectedPiece.validMove(chessBoard.board))
                 drawBoard()
                 drawPieces(flip)
                 for j in pieceMove:
@@ -173,7 +173,7 @@ while not gO:
                     img = pygame.image.load("./art/green_circle_neg.png")
                     img = pygame.transform.scale(img, (75, 75))
                     screen.blit(img, (x, y))
-            elif selectedPiece != None and [bRows, bCols] in pieceMove:
+            elif selectedPiece != None and (bRows, bCols) in pieceMove:
                 Move(bRows, bCols)
                 
         if event.type == pygame.MOUSEMOTION and not selectedPiece == None and pygame.mouse.get_pressed() == (1, 0, 0):

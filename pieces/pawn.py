@@ -10,26 +10,30 @@ class Pawn(Piece):
 
     def validMove(self, board):
         super().validMove(board)
+        s = set(range(8))
+        alliance = self.alliance
+        traverse = self.traverse
+        append = self.piecesMoves.append
 
         traverse = {"W": -1, "B": 1}
 
         x = self.x_coord + traverse[self.alliance]
 
-        if x in range(8) and self.board[x][self.y_coord].pieceOccupy.symbol == "0":
-            self.piecesMoves.append([x, self.y_coord])
+        if x in s and board[x][self.y_coord].pieceOccupy.symbol == "0":
+            append((x, self.y_coord))
 
-        if self.y_coord+1 < 8 and self.board[x][self.y_coord+1].pieceOccupy.symbol != "0":
-            if self.board[x][self.y_coord+1].pieceOccupy.alliance != self.alliance:
-                self.piecesMoves.append([x, self.y_coord+1])
+        if self.y_coord+1 < 8 and board[x][self.y_coord+1].pieceOccupy.symbol != "0":
+            if board[x][self.y_coord+1].pieceOccupy.alliance != alliance:
+                append((x, self.y_coord+1))
 
-        if self.y_coord-1 >= 0 and self.board[x][self.y_coord-1].pieceOccupy.symbol != "0":
-            if self.board[x][self.y_coord+1].pieceOccupy.alliance != self.alliance:
-                self.piecesMoves.append([x, self.y_coord-1])
+        if self.y_coord-1 >= 0 and board[x][self.y_coord-1].pieceOccupy.symbol != "0":
+            if board[x][self.y_coord+1].pieceOccupy.alliance != alliance:
+                append((x, self.y_coord-1))
 
-        if self.fMove is True and self.board[x+traverse[self.alliance]][self.y_coord].pieceOccupy.symbol == "0":
-            self.piecesMoves.append([x+traverse[self.alliance], self.y_coord])
+        if self.fMove is True and board[x+traverse[self.alliance]][self.y_coord].pieceOccupy.symbol == "0":
+            append((x+traverse[self.alliance], self.y_coord))
 
-        enP = enPassant(self.board, self.piecesMoves, self)
+        enP = enPassant(board, self.piecesMoves, self)
         enP.Check()
         
         return self.piecesMoves
