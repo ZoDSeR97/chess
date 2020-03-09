@@ -12,12 +12,12 @@ class Pawn(Piece):
         super().validMove(board)
         s = set(range(8))
         alliance = self.alliance
-        traverse = self.traverse
         append = self.piecesMoves.append
 
+        #Generalize alliance by using dict
         traverse = {"W": -1, "B": 1}
 
-        x = self.x_coord + traverse[self.alliance]
+        x = self.x_coord + traverse[alliance]
 
         if x in s and board[x][self.y_coord].pieceOccupy.symbol == "0":
             append((x, self.y_coord))
@@ -34,6 +34,6 @@ class Pawn(Piece):
             append((x+traverse[self.alliance], self.y_coord))
 
         enP = enPassant(board, self.piecesMoves, self)
-        enP.Check()
+        enP.checkPawn()
         
         return self.piecesMoves

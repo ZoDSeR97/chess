@@ -15,6 +15,7 @@ class Piece:
 
     def validMove(self, board):
         self.piecesMoves.clear()
+        #for the sake of loop lookup
         x_origin = self.x_coord
         y_origin = self.y_coord
         alliance = self.alliance

@@ -11,8 +11,6 @@ ui_width, ui_height = 600, 600
 selectedPiece = None
 
 screen = pygame.display.set_mode((ui_width, ui_height))
-screen = pygame.display.get_surface()
-#screen.blit(pygame.transform.flip(screen, False, True), dest=(0, 0))
 
 pygame.display.set_caption("Pygame Chess")
 
@@ -35,6 +33,7 @@ flip = False
 x_origin = None
 y_origin = None
 
+#Draw every board tile O(n^2) but offer more board variation in color
 def drawBoard():
     x_coord = 0
     y_coord = 0
@@ -55,6 +54,7 @@ def drawBoard():
         x_coord = 0
         y_coord += 75
 
+#Blitting all pieces available O(n^2)
 def drawPieces(flip):
     global currentAlliance
     global allPieces
@@ -69,6 +69,7 @@ def drawPieces(flip):
         currentAlliance = "W"
         wPieces.clear()
     else:
+        #resverse bliting = flip the board
         currentAlliance = "B"
         bPieces.clear()
         traverse.reverse()
@@ -107,6 +108,7 @@ def switchSide():
     if selectedPiece.symbol == "P" and selectedPiece.passP is True:
         passPawn = selectedPiece
 
+#piece move from A to B, Null will move to A
 def Move(x, y):
     global x_origin
     global y_origin
@@ -150,20 +152,31 @@ while not gO:
         if event.type == pygame.MOUSEBUTTONDOWN:
             #get UI coordinate
             cols, rows = pygame.mouse.get_pos()
+
             #convert into board coordinate
             bRows = (int)(rows/75)
             bCols = (int)(cols/75)
             if currentAlliance == "B":
                 bRows = (int)((600-rows)/75)
                 bCols = (int)((600-cols)/75)
+
             if chessBoard.board[bRows][bCols].pieceOccupy.alliance == currentAlliance:
+                #clear pieceMove to get new valid move of new selectedPiece
                 pieceMove.clear()
                 selectedPiece = chessBoard.board[bRows][bCols].pieceOccupy
+
+                #keep origin to erase piece into null at the board
                 x_origin = bRows
                 y_origin = bCols
+
+                #convert into set to check whether an element in a set (faster than using list) 
                 pieceMove = set(selectedPiece.validMove(chessBoard.board))
+                
+                #refresh the board remove previous valid move blit
                 drawBoard()
                 drawPieces(flip)
+
+                #bliting valid move onto the board
                 for j in pieceMove:
                     y = j[0]*75
                     x = j[1]*75
@@ -173,6 +186,7 @@ while not gO:
                     img = pygame.image.load("./art/green_circle_neg.png")
                     img = pygame.transform.scale(img, (75, 75))
                     screen.blit(img, (x, y))
+
             elif selectedPiece != None and (bRows, bCols) in pieceMove:
                 Move(bRows, bCols)
                 

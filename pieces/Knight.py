@@ -6,6 +6,7 @@ class Knight(Piece):
         self.symbol = "N"
 
     def validMove(self, board):
+        #list of increment x and y for valid move
         self.traverse = [[2, 1], [2, -1], [1, 2], [-1, 2], [-2, 1], [-2, -1], [1, -2], [-1, -2]]
         super().validMove(board)
 
