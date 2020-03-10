@@ -27,21 +27,20 @@ class enPassant(Rule):
         incre = {"W": -1, "B": 1}
         alliance = self.piece.alliance
         append = self.moveList.append
-        x = self.piece.x_coord
         y = self.piece.y_coord
-
-        pieceLeft = self.board[dict[alliance]][y-1].pieceOccupy
-        attLeft = self.board[dict[alliance] + incre[alliance]][y-1].pieceOccupy
-
-        pieceRight = self.board[dict[alliance]][y+1].pieceOccupy
-        attRight = self.board[dict[alliance] + incre[alliance]][y+1].pieceOccupy
+        if y > 0:
+            pieceLeft = self.board[dict[alliance]][y-1].pieceOccupy
+            attLeft = self.board[dict[alliance] + incre[alliance]][y-1].pieceOccupy
+        if y < 7:
+            pieceRight = self.board[dict[alliance]][y+1].pieceOccupy
+            attRight = self.board[dict[alliance] + incre[alliance]][y+1].pieceOccupy
         
-        if x == dict[alliance]:
+        if self.piece.x_coord == dict[alliance]:
             #look on the left side
-            if pieceLeft.symbol == "P" and pieceLeft.alliance != alliance:
+            if y > 0 and pieceLeft.symbol == "P" and pieceLeft.alliance != alliance:
                 if pieceLeft.passP is True and attLeft.symbol == "0":
-                        append((x + incre[alliance], y-1))
+                        append((dict[alliance] + incre[alliance], y-1))
             #look on the right side                
-            if pieceRight.symbol == "P" and pieceRight.alliance != alliance:
+            if y < 7 and pieceRight.symbol == "P" and pieceRight.alliance != alliance:
                 if pieceRight.passP is True and attRight.symbol == "0":
-                    append((x + incre[alliance], y+1))
+                    append((dict[alliance] + incre[alliance], y+1))
