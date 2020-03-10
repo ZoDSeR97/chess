@@ -19,8 +19,6 @@ class Board:
         #populate Pawn
         for cols in range(8):
             self.board[1][cols] = Tile(Pawn("B", 1, cols))
-
-        for cols in range(8):
             self.board[6][cols] = Tile(Pawn("W", 6, cols))
 
         #populate King

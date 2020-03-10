@@ -23,30 +23,25 @@ class enPassant(Rule):
         super().__init__(board, moveList, piece)
 
     def checkPawn(self):
-        if self.piece.alliance == "W" and self.piece.x_coord == 3:
+        dict = {"W": 3, "B": 4}
+        incre = {"W": -1, "B": 1}
+        alliance = self.piece.alliance
+        append = self.moveList.append
+        x = self.piece.x_coord
+        y = self.piece.y_coord
 
-            if self.board[self.piece.x_coord][self.piece.y_coord-1].pieceOccupy.symbol == "P":
-                if self.board[self.piece.x_coord][self.piece.y_coord-1].pieceOccupy.passP is True:
-                    if self.board[self.piece.x_coord][self.piece.y_coord-1].pieceOccupy.alliance == "B":
-                        if self.board[self.piece.x_coord-1][self.piece.y_coord-1].pieceOccupy.symbol == "0":
-                            self.moveList.append([self.piece.x_coord-1, self.piece.y_coord-1])
-                            
-            if self.board[self.piece.x_coord][self.piece.y_coord+1].pieceOccupy.symbol == "P":
-                if self.board[self.piece.x_coord][self.piece.y_coord+1].pieceOccupy.passP is True:
-                    if self.board[self.piece.x_coord][self.piece.y_coord+1].pieceOccupy.alliance == "B":
-                        if self.board[self.piece.x_coord-1][self.piece.y_coord+1].pieceOccupy.symbol == "0":
-                            self.moveList.append([self.piece.x_coord-1, self.piece.y_coord+1])
-                            
-        if self.piece.alliance == "B" and self.piece.x_coord == 4:
+        pieceLeft = self.board[dict[alliance]][y-1].pieceOccupy
+        attLeft = self.board[dict[alliance] + incre[alliance]][y-1].pieceOccupy
 
-            if self.board[self.piece.x_coord][self.piece.y_coord-1].pieceOccupy.symbol == "P":
-                if self.board[self.piece.x_coord][self.piece.y_coord-1].pieceOccupy.passP is True:
-                    if self.board[self.piece.x_coord][self.piece.y_coord-1].pieceOccupy.alliance == "W":
-                        if self.board[self.piece.x_coord+1][self.piece.y_coord-1].pieceOccupy.symbol == "0":
-                            self.moveList.append([self.piece.x_coord+1, self.piece.y_coord-1])
-
-            if self.board[self.piece.x_coord][self.piece.y_coord+1].pieceOccupy.symbol == "P":
-                if self.board[self.piece.x_coord][self.piece.y_coord+1].pieceOccupy.passP is True:
-                    if self.board[self.piece.x_coord][self.piece.y_coord+1].pieceOccupy.alliance == "W":
-                        if self.board[self.piece.x_coord+1][self.piece.y_coord+1].pieceOccupy.symbol == "0":
-                            self.moveList.append([self.piece.x_coord+1, self.piece.y_coord+1])
+        pieceRight = self.board[dict[alliance]][y+1].pieceOccupy
+        attRight = self.board[dict[alliance] + incre[alliance]][y+1].pieceOccupy
+        
+        if x == dict[alliance]:
+            #look on the left side
+            if pieceLeft.symbol == "P" and pieceLeft.alliance != alliance:
+                if pieceLeft.passP is True and attLeft.symbol == "0":
+                        append((x + incre[alliance], y-1))
+            #look on the right side                
+            if pieceRight.symbol == "P" and pieceRight.alliance != alliance:
+                if pieceRight.passP is True and attRight.symbol == "0":
+                    append((x + incre[alliance], y+1))
