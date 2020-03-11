@@ -2,10 +2,10 @@ class Rule:
     board = None
     moveList = []
     piece = None
-    removeList = set()
+    removeList = []
     def __init__(self, board, piecesMoves, piece):
         self.board = board
-        self.moveList = set(piecesMoves)
+        self.moveList = piecesMoves
         self.piece = piece
     
     def Check(self):
@@ -26,7 +26,7 @@ class enPassant(Rule):
         dict = {"W": 3, "B": 4}
         incre = {"W": -1, "B": 1}
         alliance = self.piece.alliance
-        add = self.moveList.add
+        append = self.moveList.append
         y = self.piece.y_coord
         if y > 0:
             pieceLeft = self.board[dict[alliance]][y-1].pieceOccupy
@@ -39,11 +39,11 @@ class enPassant(Rule):
             #look on the left side
             if y > 0 and pieceLeft.symbol == "P" and pieceLeft.alliance != alliance:
                 if pieceLeft.passP is True and attLeft.symbol == "0":
-                        add((dict[alliance] + incre[alliance], y-1))
+                        append((dict[alliance] + incre[alliance], y-1))
             #look on the right side                
             elif y < 7 and pieceRight.symbol == "P" and pieceRight.alliance != alliance:
                 if pieceRight.passP is True and attRight.symbol == "0":
-                    add((dict[alliance] + incre[alliance], y+1))
+                    append((dict[alliance] + incre[alliance], y+1))
 
 class checkKing(Rule):
     def __init__(self, board, piece):
@@ -66,7 +66,7 @@ class checkKing(Rule):
             traverse = dict[symbol]
         else:
             traverse = pa[alliance]
-        add = self.moveList.add
+        append = self.moveList.append
         clear = self.moveList.clear
         s = set(range(8))
 
@@ -80,11 +80,10 @@ class checkKing(Rule):
                 pass
             elif board[x][y].pieceOccupy.symbol == "0":
                 if symbol != "K" and symbol != "N":
-                    #reserve moves that lead to someWhere
-                    add((x, y))
+                    append((x, y))
                     continue
             elif board[x][y].pieceOccupy.alliance != alliance and board[x][y].pieceOccupy.symbol == "K":
-                add((x, y))
+                append((x, y))
                 break
             if traverse != list():
                 x = piece.x_coord
