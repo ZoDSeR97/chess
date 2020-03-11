@@ -81,7 +81,7 @@ class checkKing(Rule):
             elif board[x][y].pieceOccupy.symbol == "0":
                 if symbol != "K" and symbol != "N":
                     #reserve moves that lead to someWhere
-                    append((x, y))
+                    add((x, y))
                     continue
             elif board[x][y].pieceOccupy.alliance != alliance and board[x][y].pieceOccupy.symbol == "K":
                 add((x, y))
