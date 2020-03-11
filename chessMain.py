@@ -1,5 +1,6 @@
 from board.chessBoard import Board
 from pieces.nullPiece import nullPiece
+from rule.chessRule import checkKing
 import pygame, os, sys, time
 
 pygame.init()
@@ -17,18 +18,20 @@ pygame.display.set_caption("Pygame Chess")
 clock = pygame.time.Clock()
 
 allPieces = []
-wPieces= []
-bPieces= []
-
+wPieces = []
+bPieces = []
 pieceMove = []
 currentAlliance = "W"
+reqMove = set()
 
 chessBoard = Board()
-chessBoard.createBoard()
+wKing = chessBoard.board[7][4].pieceOccupy
+bKing = chessBoard.board[0][4].pieceOccupy
 
 passPawn = None
 
 flip = False
+checking = False
 
 x_origin = None
 y_origin = None
@@ -68,10 +71,12 @@ def drawPieces(flip):
     if flip is False:
         currentAlliance = "W"
         wPieces.clear()
+        currentPieces = wPieces
     else:
         #resverse bliting = flip the board
         currentAlliance = "B"
         bPieces.clear()
+        currentPieces = bPieces
         traverse.reverse()
 
     for rows in traverse:
@@ -98,6 +103,8 @@ def switchSide():
     global flip
     global selectedPiece
     global passPawn
+    global checking
+    add = reqMove.add
     flip = not flip
     if passPawn is not None:
         passPawn.passP = False
@@ -171,21 +178,22 @@ while not gO:
 
                 #convert into set to check whether an element in a set (faster than using list) 
                 pieceMove = set(selectedPiece.validMove(chessBoard.board))
-                
+
                 #refresh the board remove previous valid move blit
                 drawBoard()
                 drawPieces(flip)
 
-                #bliting valid move onto the board
-                for j in pieceMove:
-                    y = j[0]*75
-                    x = j[1]*75
-                    if currentAlliance == "B":
-                        y = 525 - y
-                        x = 525 - x
-                    img = pygame.image.load("./art/green_circle_neg.png")
-                    img = pygame.transform.scale(img, (75, 75))
-                    screen.blit(img, (x, y))
+                if pieceMove is not set():
+                    #bliting valid move onto the board
+                    for j in pieceMove:
+                        y = j[0]*75
+                        x = j[1]*75
+                        if currentAlliance == "B":
+                            y = 525 - y
+                            x = 525 - x
+                        img = pygame.image.load("./art/green_circle_neg.png")
+                        img = pygame.transform.scale(img, (75, 75))
+                        screen.blit(img, (x, y))
 
             elif selectedPiece != None and (bRows, bCols) in pieceMove:
                 Move(bRows, bCols)

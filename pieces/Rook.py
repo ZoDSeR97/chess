@@ -6,6 +6,7 @@ class Rook(Piece):
         self.symbol = "R"
     
     def validMove(self, board):
+        #list of increment x and y for valid move
         self.traverse = [[1, 0],[-1, 0], [0, 1], [0, -1]]
         super().validMove(board)
         

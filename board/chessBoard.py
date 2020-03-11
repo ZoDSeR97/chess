@@ -15,33 +15,36 @@ class Board:
     #Using list comprehension to populate board
     board = [[Tile(nullPiece()) for i in range(8)] for j in range(8)]
 
-    def createBoard(self):
+    def __init__(self):
+        self.createBoard(self.board)
+
+    def createBoard(self, board):
         #populate Pawn
         for cols in range(8):
-            self.board[1][cols] = Tile(Pawn("B", 1, cols))
-            self.board[6][cols] = Tile(Pawn("W", 6, cols))
+            board[1][cols] = Tile(Pawn("B", 1, cols))
+            board[6][cols] = Tile(Pawn("W", 6, cols))
 
         #populate King
-        self.board[0][4] = Tile(King("B", 0, 4))
-        self.board[7][4] = Tile(King("W", 7, 4))
+        board[0][4] = Tile(King("B", 0, 4))
+        board[7][4] = Tile(King("W", 7, 4))
 
         #populate Queen
-        self.board[0][3] = Tile(Queen("B", 0, 3))
-        self.board[7][3] = Tile(Queen("W", 7, 3))
+        board[0][3] = Tile(Queen("B", 0, 3))
+        board[7][3] = Tile(Queen("W", 7, 3))
 
-        #populate Rock
-        self.board[0][0] = Tile(Rook("B", 0, 0))
-        self.board[0][7] = Tile(Rook("B", 0, 7))
+        #populate Rook
+        board[0][0] = Tile(Rook("B", 0, 0))
+        board[0][7] = Tile(Rook("B", 0, 7))
 
-        self.board[7][0] = Tile(Rook("W", 7, 0))
-        self.board[7][7] = Tile(Rook("W", 7, 7))
+        board[7][0] = Tile(Rook("W", 7, 0))
+        board[7][7] = Tile(Rook("W", 7, 7))
 
         #populate Bishop
-        self.board[0][2] = Tile(Bishop("B", 0, 2))
-        self.board[0][5] = Tile(Bishop("B", 0, 5))
+        board[0][2] = Tile(Bishop("B", 0, 2))
+        board[0][5] = Tile(Bishop("B", 0, 5))
 
-        self.board[7][2] = Tile(Bishop("W", 7, 2))
-        self.board[7][5] = Tile(Bishop("W", 7, 5))
+        board[7][2] = Tile(Bishop("W", 7, 2))
+        board[7][5] = Tile(Bishop("W", 7, 5))
 
         #populate Knight
         self.board[0][1] = Tile(Knight("B", 0, 1))
