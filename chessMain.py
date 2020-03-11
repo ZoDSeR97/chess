@@ -20,9 +20,9 @@ clock = pygame.time.Clock()
 allPieces = []
 wPieces = []
 bPieces = []
-pieceMove = []
 currentAlliance = "W"
 reqMove = set()
+pieceMove = set()
 
 chessBoard = Board()
 wKing = chessBoard.board[7][4].pieceOccupy
