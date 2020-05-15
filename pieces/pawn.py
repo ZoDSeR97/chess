@@ -27,7 +27,7 @@ class Pawn(Piece):
                 append((x, self.y_coord+1))
 
         if self.y_coord-1 >= 0 and board[x][self.y_coord-1].pieceOccupy.symbol != "0":
-            if board[x][self.y_coord+1].pieceOccupy.alliance != alliance:
+            if board[x][self.y_coord-1].pieceOccupy.alliance != alliance:
                 append((x, self.y_coord-1))
 
         if self.fMove is True and board[x+traverse[self.alliance]][self.y_coord].pieceOccupy.symbol == "0":

@@ -7,6 +7,7 @@ class Piece:
     fMove = True
     protected = False
     symbol = "0"
+    value = 0
 
     def __init__(self, alliance, x, y):
         self.alliance = alliance

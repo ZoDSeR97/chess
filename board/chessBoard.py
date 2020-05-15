@@ -8,8 +8,18 @@ from pieces.Rook import Rook
 
 class Tile:
     pieceOccupy = None
+    score = None
+
     def __init__(self, piece):
         self.pieceOccupy = piece
+        self.updateScore()
+
+    def updateScore(self):
+        piece = self.pieceOccupy
+        if piece.symbol != "0":
+            self.score = piece.value*((piece.x_coord)/7+(piece.y_coord))
+        else:
+            self.score = 0
 
 class Board:
     #Using list comprehension to populate board
@@ -65,3 +75,10 @@ class Board:
     
     def updateBoard(self, x, y, piece):
         self.board[x][y] = Tile(piece)
+
+    def promotePawn(self, x, y, alliance, symbol):
+        dict = {"Q": Queen(alliance, x, y), 
+                "B": Bishop(alliance, x, y), 
+                "R": Rook(alliance, x, y), 
+                "N": Knight(alliance, x, y)}
+        self.board[x][y] = Tile(dict[symbol])
