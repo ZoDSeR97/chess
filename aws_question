@@ -1,0 +1,95 @@
+Question 1:
+Please write business logic code for the Warehouse Packing Manager
+3 types of boxes: We have small, medium and large boxes.
+We pack one product in one box based on the product size.
+For small product:
+If we do not have small box available, we put the product to the medium one.
+If we do not have medium box available, we put the product to the large one.
+For medium product:
+If we do not have medium box available, we put the product to the large one.
+I expect to see interfaces, classes and communication between them.
+class PackingManager methods that we need:
+ packProduct - to pack the particular product
+ addBoxes - add new boxes for packing
+ 
+ Question 2:
+/**
+* Imagine we have a site at Amazon for training courses people can take.
+*
+* Each course has a unique String name.
+*
+* These courses have a required order they must be taken. For example, to take the the DatabasesCourse,
+* you must first take the SecurityCourse.
+*
+* A catalog of courses and the required courses that must be taken are given to you as input and
+* you must write a function to check if the catalog is valid.
+*
+* For example this is a valid course catalog,
+* "DatabaseCourse": ["SecurityCourse", "LoggingCourse"]
+* "SecurityCourse": ["LoggingCourse"]
+* "LoggingCourse": []
+*
+* But this is NOT a valid course catalog,
+* "DatabaseCourse": ["SecurityCourse", "LoggingCourse"]
+* "SecurityCourse": ["LoggingCourse"]
+* "LoggingCourse": ["DatabaseCourse"]
+*
+* Because it's impossible for the student to take the courses in the required order.
+*/
+ 
+ Question 3:
+ // See: https://upload.wikimedia.org/wikipedia/commons/7/73/Telephone-keypad2.svg
+
+//+-------------+
+//|    |ABC|DEF |
+//|  1 | 2 | 3  |
+//+-------------+
+//| GHI|JKL|MNO |
+//|  4 | 5 | 6  |
+//+-------------+
+//|PRQS|TUV|WXYZ|
+//|  7 | 8 | 9  |
+//+----+---+----+
+
+//input -> [2, 2, 8]
+//output -> CAT, BAT, ACT, 
+//(BCU x)
+
+// Assume that english words are there in a data structure of your choice
+
+const availableWords: string[] = [...];
+
+const numCharMap = {
+    'A': 2,
+    'B': 2,
+    ...
+}
+
+// cat <-> 228
+// bat <-> 228
+// only 1000 words.. And I will query 100000 times query a number
+
+//228 time complexity of look up? Can you make it O(1)
+// 228 -> O(1)
+
+let wordMap = {}; // { 228: ['cat', 'bat', ...] }
+
+for (let i = 0; i < availableWords; ++i) { // O(m*n)
+    let telNum = getTelephoneNumber(availableWords[i]);
+    if (!map.contains(telNum)) {
+        map[telNum] = [];
+    }
+    map[telNum].push(availableWords[i])
+}
+
+function getTelephoneNumber(word: string) { // O(n)
+    let num: string[];
+    for (let char in word) {
+        num.push(numCharMap(char));
+    }
+    return parseInt(num);
+}
+
+function display(input: number) {
+    return map[input];
+}
